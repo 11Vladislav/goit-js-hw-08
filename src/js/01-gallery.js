@@ -7,7 +7,7 @@ import { galleryItems } from './gallery-items';
 const galleryEl = document.querySelector('.gallery'); // получение элемента галереи
 galleryCreate(galleryItems, galleryEl); // создание галереи
 
-new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 }); // подключение модального окна к галерее
+new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 }); // подключение модального окна к галерее с помощью библиотеки SimpleLightbox
 
 function galleryCreate(list, place) { // функция создания галереи
     const markup = list.map(event => // подстановка данных из массива в шаблон
