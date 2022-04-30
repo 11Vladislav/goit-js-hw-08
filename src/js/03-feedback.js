@@ -6,7 +6,7 @@ let formState = {}; // объявляем переменную состояни�
 
 form.addEventListener('input', throttle(handleFormInput, 500)); // подписываемся на событие input и обрабатываем его через throttle
 form.addEventListener('submit', handleFormSubmit); // подписываемся на событие submit и обрабатываем его
-isData(); 
+isData(); // подписываемся на событие при загрузке страницы
 
 function handleFormInput(event) { // обрабатываем событие input
   const { name, value } = event.target; // получаем имя и значение поля
@@ -18,7 +18,7 @@ function isData() { // проверяем есть ли данные в localSto
     return Object.keys(formState).length > 0; // проверяем есть ли в состоянии формы данные
 }
 
-function handleFormSubmit(event) {
+function handleFormSubmit(event) {  // обрабатываем событие submit
     event.preventDefault(); // отменяем действие по умолчанию
     const formData = getData(); // получаем данные из формы
     console.log(formData); // выводим данные в консоль
@@ -26,7 +26,7 @@ function handleFormSubmit(event) {
     
 }
 
-function getData() {
+function getData() { // получаем данные из формы
     if (localStorage.getItem(FORM_STORAGE_KEY)) { // проверяем есть ли данные в localStorage
         return JSON.parse(localStorage.getItem(FORM_STORAGE_KEY)); // если есть данные в localStorage парсим их в объект
     }
