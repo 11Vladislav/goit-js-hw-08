@@ -1,35 +1,37 @@
 import throttle from 'lodash.throttle'; // подлючаем метод из библиотеки lodash.throttle
 
-const form = document.querySelector('.feedback-form'); // получаем форму
-const FORM_STORAGE_KEY = 'feedback-form-state'; // получаем состояние формы
-let formState = {}; // объявляем переменную состояния формы
+const LOCAL_STORAGE_KEY = 'feedback-form-state'; // ключ для сохранения данных в localStorage
 
-form.addEventListener('input', throttle(handleFormInput, 500)); // подписываемся на событие input и обрабатываем его через throttle
-form.addEventListener('submit', handleFormSubmit); // подписываемся на событие submit и обрабатываем его
-isData(); // подписываемся на событие при загрузке страницы
+const refs = { // объявляем объект с помощью ключей и значениями
+    form: document.querySelector('.feedback-form'), // объявляем элемент по классу
+};
 
-function handleFormInput(event) { // обрабатываем событие input
-  const { name, value } = event.target; // получаем имя и значение поля
-  formState[name] = value; // записываем в состояние формы имя и значение поля
-  localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formState)); // записываем в localStorage имя и значение поля
+refs.form.addEventListener('input', throttle(handleInput, 500)); // подписываемся на событие и вызываем функцию по клику на кнопку
+refs.form.addEventListener('submit', handleSubmit); // подписываемся на событие и вызываем функцию по клику на кнопку
+
+if (localStorage.getItem(LOCAL_STORAGE_KEY)) {  // если есть данные в localStorage
+    const state = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)); // преобразуем данные в объект
+    refs.form.elements.email.value = state.email; // записываем данные в элемент
+    refs.form.elements.message.value = state.message; // записываем данные в элемент
 }
 
-function isData() { // проверяем есть ли данные в localStorage
-    return Object.keys(formState).length > 0; // проверяем есть ли в состоянии формы данные
+function handleInput(event) { // при вводе данных в форму
+    const state = { // объявляем объект с помощью ключей и значениями
+        email: refs.form.elements.email.value, // объявляем элемент по классу
+        message: refs.form.elements.message.value, // объявляем элемент по классу
+    };
+
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state)); // записываем данные в localStorage
 }
 
-function handleFormSubmit(event) {  // обрабатываем событие submit
+function handleSubmit(event) { // при отправке формы
     event.preventDefault(); // отменяем действие по умолчанию
-    const formData = getData(); // получаем данные из формы
-    console.log(formData); // выводим данные в консоль
-    formState = {}; // обнуляем состояние формы
-    
-}
 
-function getData() { // получаем данные из формы
-    if (localStorage.getItem(FORM_STORAGE_KEY)) { // проверяем есть ли данные в localStorage
-        return JSON.parse(localStorage.getItem(FORM_STORAGE_KEY)); // если есть данные в localStorage парсим их в объект
-    }
-    return {}; // если данных нет в localStorage возвращаем пустой объект
+    const state = { // объявляем объект с помощью ключей и значениями
+        email: refs.form.elements.email.value, // объявляем элемент по классу
+        message: refs.form.elements.message.value, // объявляем элемент по классу
+    };
+
+    console.log(state); // выводим данные в консоль
 }
 
