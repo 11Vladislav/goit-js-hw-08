@@ -33,5 +33,6 @@ function handleSubmit(event) { // при отправке формы
     };
 
     console.log(state); // выводим данные в консоль
+    event.currentTarget.reset(); // очищаем форму
 }
 
